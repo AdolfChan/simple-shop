@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-100">
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="flex justify-center text-teal-600">
+        <div className="flex justify-center text-[#6489da]">
           <Link href="/" className="text-3xl font-bold flex">
             <svg
               className="h-8 px-3"
