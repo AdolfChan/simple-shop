@@ -4,10 +4,41 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useActionState } from "react";
 import { register, State } from "../../../lib/actions/register";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { signIn } from "next-auth/react";
 
 export default function Register() {
-  const initialState: State = { message: "", errors: {} };
+  const router = useRouter();
+  const initialState: State = {
+    message: "",
+    errors: {},
+    email: "",
+    password: "",
+  };
   const [state, formaction] = useActionState(register, initialState);
+
+  useEffect(() => {
+    if (state.message === "Регистрация успешна!") {
+      async function sign() {
+        const response = await signIn("credentials", {
+          email: state.email,
+          password: state.password,
+          redirect: false,
+          callbackUrl: "/",
+        });
+        if (response?.error) {
+          console.log("Ошибка входа:", response.error);
+        } else {
+          // Редирект только после успешного входа
+          router.push("/");
+          // Принудительно обновляем страницу, чтобы обновить состояние аутентификации
+          //router.refresh();
+        }
+      }
+      sign();
+    }
+  }, [state, router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f8f9fa] py-12 px-4 sm:px-6 lg:px-8">
@@ -32,7 +63,7 @@ export default function Register() {
           </p>
         </div>
         <form className="mt-8 space-y-6" action={formaction}>
-          <div className="rounded-md shadow-sm space-y-4">
+          <div className="rounded-md  space-y-4">
             <div>
               <label htmlFor="name" className="sr-only">
                 Full Name

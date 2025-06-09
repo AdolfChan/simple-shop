@@ -2,7 +2,6 @@
 import { registerSchema } from "../validations/zodparse";
 import prisma from "../prisma";
 import bcrypt from "bcryptjs";
-import { redirect } from "next/navigation";
 
 export type State = {
   message: string | null;
@@ -12,6 +11,8 @@ export type State = {
     password?: string[];
     confirmPassword?: string[];
   };
+  email: string;
+  password: string;
 };
 
 export async function register(prevState: State, formData: FormData) {
@@ -28,6 +29,8 @@ export async function register(prevState: State, formData: FormData) {
     return {
       errors: validatedData.error.flatten().fieldErrors,
       message: "Пожалуйста, исправьте ошибки в форме.",
+      email: "",
+      password: "",
     };
   }
 
@@ -41,16 +44,20 @@ export async function register(prevState: State, formData: FormData) {
     });
 
     console.log("User created:", user);
-    redirect("/");
+
     return {
       errors: {},
       message: "Регистрация успешна!",
+      email: String(user.email),
+      password: String(rawFormData.password),
     };
   } catch (error) {
     console.log(error);
     return {
       errors: {},
       message: "Произошла ошибка при регистрации.",
+      email: "",
+      password: "",
     };
   }
 }
