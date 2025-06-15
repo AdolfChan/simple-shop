@@ -30,9 +30,7 @@ export default function Register() {
         if (response?.error) {
           console.log("Ошибка входа:", response.error);
         } else {
-          // Редирект только после успешного входа
           router.push("/");
-          // Принудительно обновляем страницу, чтобы обновить состояние аутентификации
           //router.refresh();
         }
       }
