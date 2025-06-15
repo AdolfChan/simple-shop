@@ -44,17 +44,14 @@ const chefs = [
 
 export default function CheefStaff() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const totalSlides = Math.ceil(chefs.length / 3);
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex + 1 >= chefs.length - 2 ? 0 : prevIndex + 1
-    );
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex - 1 < 0 ? chefs.length - 3 : prevIndex - 1
-    );
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + totalSlides) % totalSlides);
   };
 
   return (
@@ -108,25 +105,37 @@ export default function CheefStaff() {
           <div
             className="flex transition-transform duration-500 ease-in-out"
             style={{
-              transform: `translateX(-${currentIndex * (100 / 3)}%)`,
-              width: `${(chefs.length / 3) * 100}%`,
+              transform: `translateX(-${currentIndex * 50}%)`,
+              width: `${totalSlides * 100}%`,
             }}
           >
-            {chefs.map((chef) => (
-              <div key={chef.id} className={`w-1/3 flex-shrink-0 px-4`}>
-                <div className="flex flex-col items-center">
-                  <div className="relative w-48 h-48 mb-4 rounded-full overflow-hidden">
-                    <Image
-                      src={chef.image}
-                      alt={chef.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <h3 className="text-xl font-semibold text-center">
-                    {chef.name}
-                  </h3>
-                  <p className="text-gray-600 text-center">{chef.position}</p>
+            {Array.from({ length: totalSlides }).map((_, slideIndex) => (
+              <div
+                key={slideIndex}
+                className="w-full flex-shrink-0"
+                style={{ width: `${100 / totalSlides}%` }}
+              >
+                <div className="grid grid-cols-3 gap-4 px-4">
+                  {chefs
+                    .slice(slideIndex * 3, slideIndex * 3 + 3)
+                    .map((chef) => (
+                      <div key={chef.id} className="flex flex-col items-center">
+                        <div className="relative w-48 h-48 mb-4 rounded-full overflow-hidden">
+                          <Image
+                            src={chef.image}
+                            alt={chef.name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <h3 className="text-xl font-semibold text-center">
+                          {chef.name}
+                        </h3>
+                        <p className="text-gray-600 text-center">
+                          {chef.position}
+                        </p>
+                      </div>
+                    ))}
                 </div>
               </div>
             ))}
@@ -135,20 +144,18 @@ export default function CheefStaff() {
 
         {/* Slide Indicators */}
         <div className="flex justify-center gap-2 mt-10">
-          {Array.from({ length: Math.ceil(chefs.length - 2) }).map(
-            (_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  currentIndex === index
-                    ? "bg-[#6489da] scale-125"
-                    : "bg-gray-300 hover:bg-gray-400"
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            )
-          )}
+          {Array.from({ length: totalSlides }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                currentIndex === index
+                  ? "bg-[#6489da] scale-125"
+                  : "bg-gray-300 hover:bg-gray-400"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
         </div>
       </div>
     </div>
