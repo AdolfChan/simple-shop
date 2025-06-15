@@ -108,15 +108,12 @@ export default function CheefStaff() {
           <div
             className="flex transition-transform duration-500 ease-in-out"
             style={{
-              transform: `translateX(-${currentIndex * (100 / chefs.length)}%)`,
+              transform: `translateX(-${currentIndex * (100 / 3)}%)`,
               width: `${(chefs.length / 3) * 100}%`,
             }}
           >
             {chefs.map((chef) => (
-              <div
-                key={chef.id}
-                className={`w-1/${chefs.length} flex-shrink-0 px-4`}
-              >
+              <div key={chef.id} className={`w-1/3 flex-shrink-0 px-4`}>
                 <div className="flex flex-col items-center">
                   <div className="relative w-48 h-48 mb-4 rounded-full overflow-hidden">
                     <Image
