@@ -1,6 +1,7 @@
 "use server";
 
 import { auth } from "@/app/api/auth/auth";
+import prisma from "../prisma";
 
 export async function getReviewsStats() {
   try {
