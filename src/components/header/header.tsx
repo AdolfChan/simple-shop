@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Right } from "./rightfield";
+import { Suspense } from "react";
 
 export default function Header() {
   return (
     <header className="bg-white">
-      <div className="flex h-16 items-center px-4 sm:px-6 lg:px-8">
+      <div className="flex h-16 items-center px-4 sm:px-6 lg:px-8 justify-between">
         {/* Logo */}
         <div className="flex-shrink-0">
           <Link className="block text-[rgb(100,137,218)]" href="/">
@@ -59,9 +60,9 @@ export default function Header() {
             <li>
               <Link
                 className="text-gray-700 transition hover:text-gray-500/75"
-                href="#"
+                href="/reviews"
               >
-                Services
+                Reviews
               </Link>
             </li>
           </ul>
@@ -69,7 +70,9 @@ export default function Header() {
 
         {/* Right Component */}
         <div className="flex-shrink-0">
-          <Right />
+          <Suspense>
+            <Right />
+          </Suspense>
         </div>
       </div>
     </header>

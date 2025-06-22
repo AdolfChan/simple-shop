@@ -23,5 +23,17 @@ export const loginSchema = z.object({
   password: z.string().min(1, "Введите пароль"),
 });
 
+export const reviewSchema = z.object({
+  content: z
+    .string()
+    .min(5, "Длина отзыва должна быть больше 20 символов")
+    .max(100, "Длина отзыва должна быть меньше 50 символов"),
+  rating: z
+    .number()
+    .min(1, "Не корректная оценка")
+    .max(5, "Не корректная оценка"),
+  wouldRecommend: z.boolean(),
+});
+
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
