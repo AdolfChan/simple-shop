@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import ProfileChanger from "./profileChanger";
-import { useRouter } from "next/navigation";
 export type profileData = {
   name: string | null | undefined;
   email: string | null | undefined;
@@ -26,7 +25,6 @@ export default function ProfileClientWrapper({
   children: React.ReactNode;
 }) {
   const [edit, setEdit] = useState(false);
-  const router = useRouter();
   if (edit) {
     return (
       <>
