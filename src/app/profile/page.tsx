@@ -2,12 +2,58 @@ import Image from "next/image";
 import { getUserProfileData } from "../../../lib/actions/userData";
 import { ProfileReviewList } from "@/components/reviewList/profileReview/profileReview";
 import ProfileClientWrapper from "@/components/profile/profileClientWrapper";
+import { auth } from "../api/auth/auth";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
 export default async function Profile() {
+  console.log("=== PROFILE PAGE DEBUG ===");
+
+  // Проверяем cookies
+  const cookieStore = await cookies();
+  const allCookies = cookieStore.getAll();
+  console.log(
+    "Profile page - All cookies:",
+    allCookies.map((c) => c.name)
+  );
+
+  // Проверяем session token cookies
+  const sessionToken = cookieStore.get("next-auth.session-token");
+  const secureSessionToken = cookieStore.get(
+    "__Secure-next-auth.session-token"
+  );
+  const hostSessionToken = cookieStore.get("__Host-next-auth.session-token");
+
+  console.log("Profile page - Session token cookies:");
+  console.log(
+    "  - next-auth.session-token:",
+    sessionToken ? "exists" : "not found"
+  );
+  console.log(
+    "  - __Secure-next-auth.session-token:",
+    secureSessionToken ? "exists" : "not found"
+  );
+  console.log(
+    "  - __Host-next-auth.session-token:",
+    hostSessionToken ? "exists" : "not found"
+  );
+
+  // Проверяем сессию
+  const session = await auth();
+  console.log("Profile page - Session:", session ? "exists" : "not found");
+
+  if (session?.user) {
+    console.log("Profile page - User authenticated:", session.user.email);
+  } else {
+    console.log("Profile page - No session or user, redirecting to login");
+    redirect("/login");
+  }
+
   const profileData = await getUserProfileData();
   const totalPages = profileData.comments ? profileData.comments.length : 0;
+
   return (
     <>
       <div className="max-w-2/3 mx-auto p-4 sm:p-8">

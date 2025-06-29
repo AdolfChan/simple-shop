@@ -32,8 +32,30 @@ export async function middleware(req: NextRequest) {
     nextAuthCookies.map((c) => c.name)
   );
 
+  // Попробуем прочитать session token напрямую
+  const sessionToken = req.cookies.get("next-auth.session-token");
+  const secureSessionToken = req.cookies.get(
+    "__Secure-next-auth.session-token"
+  );
+  const hostSessionToken = req.cookies.get("__Host-next-auth.session-token");
+
+  console.log("Session token cookies:");
+  console.log(
+    "  - next-auth.session-token:",
+    sessionToken?.value ? "exists" : "not found"
+  );
+  console.log(
+    "  - __Secure-next-auth.session-token:",
+    secureSessionToken?.value ? "exists" : "not found"
+  );
+  console.log(
+    "  - __Host-next-auth.session-token:",
+    hostSessionToken?.value ? "exists" : "not found"
+  );
+
   try {
-    const token = await getToken({
+    // Попробуем разные варианты getToken
+    let token = await getToken({
       req,
       secret: process.env.AUTH_SECRET,
     });
@@ -46,6 +68,26 @@ export async function middleware(req: NextRequest) {
         : "No token"
     );
 
+    // Если токен не найден, попробуем с другими настройками
+    if (!token) {
+      console.log("Trying alternative getToken approach...");
+
+      // Попробуем с явным указанием cookie name
+      const cookieName = process.env.NEXTAUTH_URL?.startsWith("https:")
+        ? "__Secure-next-auth.session-token"
+        : "next-auth.session-token";
+
+      console.log("Trying with cookie name:", cookieName);
+
+      token = await getToken({
+        req,
+        secret: process.env.AUTH_SECRET,
+        cookieName: cookieName,
+      });
+
+      console.log("Alternative token exists:", !!token);
+    }
+
     const { pathname } = req.nextUrl;
     const protectedPaths = ["/profile"];
 
@@ -54,6 +96,13 @@ export async function middleware(req: NextRequest) {
     );
 
     console.log("Is protected path:", isProtectedPath);
+
+    // ВРЕМЕННО ОТКЛЮЧАЕМ MIDDLEWARE ДЛЯ ПРОФИЛЯ
+    if (isProtectedPath) {
+      console.log("⚠️ MIDDLEWARE TEMPORARILY DISABLED FOR /profile");
+      console.log("⚠️ Allowing request to pass through");
+      return NextResponse.next();
+    }
 
     if (isProtectedPath && !token) {
       console.log("❌ REDIRECTING TO LOGIN - No token found");
