@@ -1,11 +1,17 @@
-"use server";
 import { auth } from "@/app/api/auth/auth";
 import Link from "next/link";
 import { Suspense } from "react";
 import ProfileHeader from "../profile/profileheader";
 
 export default async function Right() {
-  const session = await auth();
+  let session;
+  try {
+    session = await auth();
+  } catch (error) {
+    console.error("Auth error in rightfield:", error);
+    session = null;
+  }
+
   return (
     <div className="flex items-center gap-4">
       {!session?.user && (
