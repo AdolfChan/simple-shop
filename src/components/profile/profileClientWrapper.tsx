@@ -33,7 +33,7 @@ export default function ProfileClientWrapper({
           onCancel={() => {
             setEdit(false);
             try {
-              // setTimeout(() => window.location.reload(), 500);
+              setTimeout(() => window.location.reload(), 500);
             } catch (error) {
               console.log(error);
             }

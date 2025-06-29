@@ -33,23 +33,31 @@ export default function ProfileChanger({
     e.preventDefault();
 
     const send = async () => {
-      const res = await fetch("/api/user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email,
-          name: name,
-          description: description,
-          avatar: avatar,
-        }),
-      });
-      if (!res.ok) {
-        console.error("Ошибка сервера:", res.status);
-        return;
+      try {
+        const requestData = {
+          email: email.trim(),
+          name: name.trim(),
+          description: description.trim() || null,
+          avatar: avatar || null,
+        };
+
+        const res = await fetch("/api/user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestData),
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          console.error("Ошибка сервера:", res.status, errorData);
+          return;
+        }
+        onCancel();
+      } catch (error) {
+        console.error("Network error:", error);
       }
     };
     send();
-    onCancel();
   };
 
   return (
@@ -133,6 +141,7 @@ export default function ProfileChanger({
           <button
             type="submit"
             className="px-6 py-2 rounded bg-[#6489da] text-white font-semibold hover:bg-[#4a6bb3] transition"
+            disabled={!name.trim() || !email.trim()}
           >
             Сохранить
           </button>

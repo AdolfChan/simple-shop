@@ -28,8 +28,10 @@ export const changeProfileSchema = z.object({
   name: z.string().min(4, "Введите корректное имя!"),
   description: z
     .string()
-    .min(2, "Описание должно содержать больше двух символов!"),
-  avatar: z.string(),
+    .min(2, "Описание должно содержать больше двух символов!")
+    .optional()
+    .nullable(),
+  avatar: z.string().optional().nullable(),
 });
 
 export const reviewSchema = z.object({
