@@ -5,12 +5,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { login, State } from "../../../lib/actions/login";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 export default function Register() {
   const initialState: State = { message: "", errors: {} };
   const [error, setError] = useState(false);
-  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
