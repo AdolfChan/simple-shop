@@ -19,7 +19,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        secure: process.env.NEXTAUTH_URL?.startsWith("https:") ?? false,
+        secure: process.env.NODE_ENV === "production",
       },
     },
     callbackUrl: {
@@ -27,7 +27,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       options: {
         sameSite: "lax",
         path: "/",
-        secure: process.env.NEXTAUTH_URL?.startsWith("https:") ?? false,
+        secure: process.env.NODE_ENV === "production",
       },
     },
     csrfToken: {
@@ -36,7 +36,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        secure: process.env.NEXTAUTH_URL?.startsWith("https:") ?? false,
+        secure: process.env.NODE_ENV === "production",
       },
     },
   },
