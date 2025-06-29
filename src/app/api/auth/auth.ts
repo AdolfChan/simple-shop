@@ -64,6 +64,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
 
     async session({ session, token }) {
+      try {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: session.user.email },
+        });
+        session.user.name = dbUser?.name;
+        session.user.email = dbUser!.email;
+        session.user.image = dbUser?.image;
+      } catch (error) {
+        console.log(error);
+        throw new Error("Can`t update user data");
+      }
       return {
         ...session,
         user: {

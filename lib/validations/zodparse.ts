@@ -23,6 +23,15 @@ export const loginSchema = z.object({
   password: z.string().min(1, "Введите пароль"),
 });
 
+export const changeProfileSchema = z.object({
+  email: z.string().email("Введите корректный email!"),
+  name: z.string().min(4, "Введите корректное имя!"),
+  description: z
+    .string()
+    .min(2, "Описание должно содержать больше двух символов!"),
+  avatar: z.string(),
+});
+
 export const reviewSchema = z.object({
   content: z
     .string()

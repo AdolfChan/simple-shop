@@ -73,6 +73,49 @@ export async function getReviews(page: number = 1, amount: number = 6) {
     throw new Error("Cant get Reviews");
   }
 }
+
+export async function getReviewsForUser(page: number = 1, amount: number = 6) {
+  try {
+    const session = await auth();
+    if (!session?.user) throw new Error("Can`t find user");
+
+    const reviews = await prisma.user.findFirst({
+      where: {
+        id: session.user.id,
+      },
+      select: {
+        comment: {
+          skip: (page - 1) * amount,
+          take: amount,
+          orderBy: {
+            date: "desc",
+          },
+          select: {
+            id: true,
+            date: true,
+            content: true,
+            rating: true,
+            user: {
+              select: {
+                name: true,
+                image: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return {
+      reviews: reviews?.comment,
+      currentPage: page,
+    };
+  } catch (error) {
+    console.log(error);
+    throw new Error("Cant get Reviews for User");
+  }
+}
+
 export async function setReview(content: string, rating: number) {
   try {
     const session = await auth();

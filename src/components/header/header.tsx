@@ -1,13 +1,15 @@
 import Link from "next/link";
-import { Right } from "./rightfield";
+import { Right } from "./rightField";
 import { Suspense } from "react";
+import LeftField from "./leftField";
 
 export default function Header() {
   return (
     <header className="bg-white">
       <div className="flex h-16 items-center px-4 sm:px-6 lg:px-8 justify-between">
         {/* Logo */}
-        <div className="flex-shrink-0">
+
+        <div className="hidden md:flex flex-shrink-0">
           <Link className="block text-[rgb(100,137,218)]" href="/">
             <span className="sr-only">Home</span>
             <svg
@@ -23,7 +25,7 @@ export default function Header() {
             </svg>
           </Link>
         </div>
-
+        <LeftField />
         {/* Centered Navigation */}
         <nav
           aria-label="Global"
@@ -42,7 +44,7 @@ export default function Header() {
             <li>
               <Link
                 className="text-gray-700 transition hover:text-gray-500/75"
-                href="#"
+                href="/menue"
               >
                 Menue
               </Link>
@@ -51,7 +53,7 @@ export default function Header() {
             <li>
               <Link
                 className="text-gray-700 transition hover:text-gray-500/75"
-                href="#"
+                href="/blog"
               >
                 Blog
               </Link>

@@ -1,6 +1,4 @@
 import CheefStaff from "@/components/cheefStaff/cheefStaff";
-import Footer from "@/components/footer";
-import Header from "@/components/header/header";
 import ScrollDownBtn from "@/components/interactiveButtons/scrollDownButton";
 import AboutReviews from "@/components/reviewList/aboutReview/Areviews";
 import Image from "next/image";
@@ -10,7 +8,6 @@ import { Suspense } from "react";
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
       <main className="flex-1 flex flex-col gap-[32px] items-center sm:items-start">
         {/* Image and divs above section */}
         <div className="w-full h-screen relative">
@@ -148,7 +145,6 @@ export default function Home() {
           <AboutReviews />
         </Suspense>
       </main>
-      <Footer />
     </div>
   );
 }

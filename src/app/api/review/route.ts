@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "../auth/auth";
 import { reviewSchema } from "../../../../lib/validations/zodparse";
+import prisma from "../../../../lib/prisma";
 
 export async function POST(request: Request) {
   const session = await auth();

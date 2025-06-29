@@ -1,9 +1,7 @@
 import { Suspense } from "react";
 import Image from "next/image";
-import Header from "@/components/header/header";
 import { getReviewsStats } from "../../../lib/actions/review";
 import { ReviewList } from "@/components/reviewList/list/reviewList";
-import Footer from "@/components/footer";
 import { SetReview } from "@/components/reviewList/leaveReview/setReviewCard";
 
 export default async function ReviewsPage() {
@@ -11,7 +9,6 @@ export default async function ReviewsPage() {
 
   return (
     <div>
-      <Header />
       <div className="min-h-screen bg-[#f8f9fa]">
         {/* Hero Section */}
         <div className="relative h-[40vh] w-full">
@@ -62,7 +59,6 @@ export default async function ReviewsPage() {
       <Suspense>
         <SetReview />
       </Suspense>
-      <Footer />
     </div>
   );
 }

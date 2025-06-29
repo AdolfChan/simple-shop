@@ -4,17 +4,20 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
 
-export function ProfileHeader() {
+export function ProfileHeader({
+  image,
+}: {
+  image?: string | null | undefined;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isOpen) return;
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
+    function handleClickOutside() {
+      setIsOpen(false);
     }
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -36,20 +39,30 @@ export function ProfileHeader() {
         className="flex items-center space-x-2 focus:outline-none cursor-pointer select-none"
       >
         <div className="w-8 h-8 rounded-full bg-[#6489da] flex items-center justify-center text-white">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-              clipRule="evenodd"
+          {image ? (
+            <Image
+              src={image}
+              alt="Avatar"
+              width={8}
+              height={8}
+              className="w-8 h-8 rounded-full shadow"
             />
-          </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                clipRule="evenodd"
+              />
+            </svg>
+          )}
         </div>
-        <span className="text-sm text-gray-700">Профиль</span>
+        {/* <span className="text-sm text-gray-700"></span> */}
       </button>
 
       <AnimatePresence>

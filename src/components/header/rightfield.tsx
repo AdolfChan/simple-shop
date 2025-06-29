@@ -47,7 +47,7 @@ export async function Right() {
       )}
       {session?.user && (
         <Suspense>
-          <ProfileHeader />
+          <ProfileHeader image={session.user.image} />
         </Suspense>
       )}
     </div>

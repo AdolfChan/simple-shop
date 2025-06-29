@@ -43,17 +43,19 @@ const chefs = [
 ];
 
 export default function CheefStaff() {
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth < 768) {
-        setChefsPerView(1);
-      } else if (window.innerWidth < 1024) {
-        setChefsPerView(2);
-      } else {
-        setChefsPerView(3);
-      }
+  function handleResize() {
+    if (window.innerWidth <= 768) {
+      setChefsPerView(1);
+    } else if (window.innerWidth < 1024) {
+      setChefsPerView(2);
+    } else {
+      setChefsPerView(3);
     }
+  }
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
     handleResize();
+    setMounted(true);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -70,7 +72,30 @@ export default function CheefStaff() {
   const prevSlide = () => {
     setCurrentIndex((prev) => Math.max(prev - 1, 0));
   };
-
+  if (!mounted) {
+    return (
+      <div className="w-full py-16 px-4 sm:px-6 lg:px-8">
+        <h2 className="text-center font-bold text-3xl mb-12 rounded h-10 w-1/3 mx-auto">
+          Our Chefs
+        </h2>
+        <div className="relative max-w-7xl mx-auto animate-pulse">
+          <div className="flex justify-center gap-8">
+            {[...Array(3)].map((_, i) => (
+              <div
+                key={i}
+                className="flex flex-col items-center"
+                style={{ width: "calc(100%/3 - 2rem)" }}
+              >
+                <div className="w-48 h-48 mb-4 rounded-full bg-gray-200"></div>
+                <div className="h-6 w-32 bg-gray-200 rounded mb-2"></div>
+                <div className="h-4 w-24 bg-gray-200 rounded"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="w-full py-16 px-4 sm:px-6 lg:px-8">
       <h2 className="text-center font-bold text-3xl mb-12">Our Chefs</h2>
