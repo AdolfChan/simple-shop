@@ -16,7 +16,7 @@ export function ProfileHeader({
 
   useEffect(() => {
     if (!isOpen) return;
-    function handleClickOutside() {
+    function handleClick() {
       setIsOpen(false);
     }
     function handleKeyDown(event: KeyboardEvent) {
@@ -24,10 +24,10 @@ export function ProfileHeader({
         setIsOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClick);
     document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClick);
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen]);

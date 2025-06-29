@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { ProfileHeader } from "../profile/profileheader";
 
-export async function Right() {
+export default async function Right() {
   const session = await auth();
   return (
     <div className="flex items-center gap-4">
