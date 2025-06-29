@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 
-export function ProfileHeader({
+export default function ProfileHeader({
   image,
 }: {
   image?: string | null | undefined;

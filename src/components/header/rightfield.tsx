@@ -2,7 +2,7 @@
 import { auth } from "@/app/api/auth/auth";
 import Link from "next/link";
 import { Suspense } from "react";
-import { ProfileHeader } from "../profile/profileheader";
+import ProfileHeader from "../profile/profileheader";
 
 export default async function Right() {
   const session = await auth();
