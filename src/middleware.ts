@@ -8,37 +8,54 @@ export async function middleware(req: NextRequest) {
   console.log("=== MIDDLEWARE DEBUG ===");
   console.log("URL:", req.url);
   console.log("Pathname:", req.nextUrl.pathname);
+  console.log("Protocol:", req.nextUrl.protocol);
   console.log("AUTH_SECRET exists:", !!process.env.AUTH_SECRET);
   console.log("NEXTAUTH_URL:", process.env.NEXTAUTH_URL);
 
-  const token = await getToken({
-    req,
-    secret: process.env.AUTH_SECRET,
-  });
-
-  console.log("Token exists:", !!token);
+  // Проверяем все cookies
+  const allCookies = req.cookies.getAll();
   console.log(
-    "Token data:",
-    token ? { id: token.id, email: token.email } : "No token"
+    "All cookies:",
+    allCookies.map((c) => c.name)
   );
 
-  const { pathname } = req.nextUrl;
-  const protectedPaths = ["/profile"];
+  try {
+    const token = await getToken({
+      req,
+      secret: process.env.AUTH_SECRET,
+    });
 
-  const isProtectedPath = protectedPaths.some((path) =>
-    pathname.startsWith(path)
-  );
+    console.log("Token exists:", !!token);
+    console.log(
+      "Token data:",
+      token
+        ? { id: token.id, email: token.email, name: token.name }
+        : "No token"
+    );
 
-  console.log("Is protected path:", isProtectedPath);
+    const { pathname } = req.nextUrl;
+    const protectedPaths = ["/profile"];
 
-  if (isProtectedPath && !token) {
-    console.log("❌ REDIRECTING TO LOGIN - No token found");
+    const isProtectedPath = protectedPaths.some((path) =>
+      pathname.startsWith(path)
+    );
+
+    console.log("Is protected path:", isProtectedPath);
+
+    if (isProtectedPath && !token) {
+      console.log("❌ REDIRECTING TO LOGIN - No token found");
+      const loginUrl = new URL("/login", req.url);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    console.log("✅ ALLOWING REQUEST");
+    return NextResponse.next();
+  } catch (error) {
+    console.error("❌ MIDDLEWARE ERROR:", error);
+    // В случае ошибки, перенаправляем на логин
     const loginUrl = new URL("/login", req.url);
     return NextResponse.redirect(loginUrl);
   }
-
-  console.log("✅ ALLOWING REQUEST");
-  return NextResponse.next();
 }
 
 export const config = {

@@ -12,6 +12,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     maxAge: 30 * 24 * 60 * 60, // session будет жить 30 дней
     updateAge: 24 * 60 * 60, // обновление session в БД раз в 24 часа при активности
   },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NEXTAUTH_URL?.startsWith("https:") ?? false,
+      },
+    },
+  },
   providers: [
     Credentials({
       credentials: {
