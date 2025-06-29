@@ -29,9 +29,17 @@ export default function Register() {
         redirect: false,
         callbackUrl: "/",
       });
+
+      console.log("SignIn response:", response);
+
       if (!response.error) {
-        window.location.replace(response.url ?? "/");
+        if (response.url) {
+          window.location.href = response.url;
+        } else {
+          window.location.href = "/profile";
+        }
       } else {
+        console.error("SignIn error:", response.error);
         setError(true);
       }
     } else {
