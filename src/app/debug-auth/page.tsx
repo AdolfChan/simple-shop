@@ -26,7 +26,7 @@ export default async function DebugAuth() {
             <div className="bg-gray-50 p-4 rounded">
               <p>
                 <strong>AUTH_SECRET exists:</strong>{" "}
-                {process.env.AUTH_SECRET ? "Yes" : "No"}
+                {process.env.NEXTAUTH_SECRET ? "Yes" : "No"}
               </p>
               <p>
                 <strong>NEXTAUTH_URL:</strong>{" "}
