@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Right from "./RightField";
+import Right from "./rightfield";
 import { Suspense } from "react";
 import LeftField from "./leftField";
 
