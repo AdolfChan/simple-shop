@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.log(error);
     return NextResponse.json(
-      { error: "Failed to add review" },
+      { error: "Failed to change user" },
       { status: 500 }
     );
   }
