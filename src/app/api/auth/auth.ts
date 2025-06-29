@@ -22,6 +22,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         secure: process.env.NEXTAUTH_URL?.startsWith("https:") ?? false,
       },
     },
+    callbackUrl: {
+      name: `next-auth.callback-url`,
+      options: {
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NEXTAUTH_URL?.startsWith("https:") ?? false,
+      },
+    },
+    csrfToken: {
+      name: `next-auth.csrf-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NEXTAUTH_URL?.startsWith("https:") ?? false,
+      },
+    },
   },
   providers: [
     Credentials({
