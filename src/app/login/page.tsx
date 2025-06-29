@@ -32,7 +32,7 @@ export default function Register() {
         callbackUrl: "/",
       });
       if (!response.error) {
-        router.push(response?.url ?? "/");
+        window.location.replace(response.url ?? "/");
       } else {
         setError(true);
       }
