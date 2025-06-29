@@ -30,8 +30,7 @@ export default function Register() {
         if (response?.error) {
           console.log("Ошибка входа:", response.error);
         } else {
-          router.push("/");
-          //router.refresh();
+          window.location.href = "/";
         }
       }
       sign();
