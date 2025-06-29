@@ -3,6 +3,8 @@ import { getUserProfileData } from "../../../lib/actions/userData";
 import { ProfileReviewList } from "@/components/reviewList/profileReview/profileReview";
 import ProfileClientWrapper from "@/components/profile/profileClientWrapper";
 
+export const dynamic = "force-dynamic";
+
 export default async function Profile() {
   const profileData = await getUserProfileData();
   const totalPages = profileData.comments ? profileData.comments.length : 0;
