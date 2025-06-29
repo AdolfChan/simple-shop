@@ -4,134 +4,24 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
-  // Отладочная информация
-  console.log("=== MIDDLEWARE DEBUG ===");
-  console.log("URL:", req.url);
-  console.log("Pathname:", req.nextUrl.pathname);
-  console.log("Protocol:", req.nextUrl.protocol);
-  console.log("Host:", req.nextUrl.host);
-  console.log("AUTH_SECRET exists:", !!process.env.AUTH_SECRET);
-  console.log("NEXTAUTH_URL:", process.env.NEXTAUTH_URL);
+  const token = await getToken({
+    req,
+    secret: process.env.AUTH_SECRET,
+  });
 
-  // Проверяем все cookies
-  const allCookies = req.cookies.getAll();
-  console.log(
-    "All cookies:",
-    allCookies.map((c) => c.name)
+  const { pathname } = req.nextUrl;
+  const protectedPaths = ["/profile"];
+
+  const isProtectedPath = protectedPaths.some((path) =>
+    pathname.startsWith(path)
   );
 
-  // Проверяем конкретно NextAuth cookies
-  const nextAuthCookies = allCookies.filter(
-    (c) =>
-      c.name.includes("next-auth") ||
-      c.name.includes("session") ||
-      c.name.includes("token")
-  );
-  console.log(
-    "NextAuth cookies:",
-    nextAuthCookies.map((c) => c.name)
-  );
-
-  // Попробуем прочитать session token напрямую
-  const sessionToken = req.cookies.get("next-auth.session-token");
-  const secureSessionToken = req.cookies.get(
-    "__Secure-next-auth.session-token"
-  );
-  const hostSessionToken = req.cookies.get("__Host-next-auth.session-token");
-
-  console.log("Session token cookies:");
-  console.log(
-    "  - next-auth.session-token:",
-    sessionToken?.value ? "exists" : "not found"
-  );
-  console.log(
-    "  - __Secure-next-auth.session-token:",
-    secureSessionToken?.value ? "exists" : "not found"
-  );
-  console.log(
-    "  - __Host-next-auth.session-token:",
-    hostSessionToken?.value ? "exists" : "not found"
-  );
-
-  try {
-    // Попробуем разные варианты getToken
-    let token = await getToken({
-      req,
-      secret: process.env.AUTH_SECRET,
-    });
-
-    console.log("Token exists:", !!token);
-    console.log(
-      "Token data:",
-      token
-        ? { id: token.id, email: token.email, name: token.name }
-        : "No token"
-    );
-
-    // Если токен не найден, попробуем с другими настройками
-    if (!token) {
-      console.log("Trying alternative getToken approach...");
-
-      // Попробуем с явным указанием cookie name
-      const cookieName = process.env.NEXTAUTH_URL?.startsWith("https:")
-        ? "__Secure-next-auth.session-token"
-        : "next-auth.session-token";
-
-      console.log("Trying with cookie name:", cookieName);
-
-      token = await getToken({
-        req,
-        secret: process.env.AUTH_SECRET,
-        cookieName: cookieName,
-      });
-
-      console.log("Alternative token exists:", !!token);
-    }
-
-    const { pathname } = req.nextUrl;
-    const protectedPaths = ["/profile"];
-
-    const isProtectedPath = protectedPaths.some((path) =>
-      pathname.startsWith(path)
-    );
-
-    console.log("Is protected path:", isProtectedPath);
-
-    // ВРЕМЕННО ОТКЛЮЧАЕМ MIDDLEWARE ДЛЯ ПРОФИЛЯ
-    if (isProtectedPath) {
-      console.log("⚠️ MIDDLEWARE TEMPORARILY DISABLED FOR /profile");
-      console.log("⚠️ Allowing request to pass through");
-      return NextResponse.next();
-    }
-
-    if (isProtectedPath && !token) {
-      console.log("❌ REDIRECTING TO LOGIN - No token found");
-      console.log("❌ Debug info:");
-      console.log(
-        "  - AUTH_SECRET length:",
-        process.env.AUTH_SECRET?.length || 0
-      );
-      console.log("  - NEXTAUTH_URL:", process.env.NEXTAUTH_URL);
-      console.log("  - Request URL:", req.url);
-      console.log("  - All cookies count:", allCookies.length);
-      console.log("  - NextAuth cookies count:", nextAuthCookies.length);
-
-      const loginUrl = new URL("/login", req.url);
-      return NextResponse.redirect(loginUrl);
-    }
-
-    console.log("✅ ALLOWING REQUEST");
-    return NextResponse.next();
-  } catch (error) {
-    console.error("❌ MIDDLEWARE ERROR:", error);
-    console.error("❌ Error details:", {
-      message: error instanceof Error ? error.message : "Unknown error",
-      stack: error instanceof Error ? error.stack : undefined,
-    });
-    // В случае ошибки, перенаправляем на логин
+  if (isProtectedPath && !token) {
     const loginUrl = new URL("/login", req.url);
     return NextResponse.redirect(loginUrl);
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
