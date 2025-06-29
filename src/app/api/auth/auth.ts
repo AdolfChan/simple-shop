@@ -101,7 +101,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.image = dbUser?.image;
       } catch (error) {
         console.log(error);
-        throw new Error("Can`t update user data");
       }
       return {
         ...session,

@@ -8,7 +8,7 @@ export async function middleware(req: NextRequest) {
     req,
     secret: process.env.NEXTAUTH_SECRET,
   });
-
+  console.log("TOKEN MIDDLEWARE", token);
   const { pathname } = req.nextUrl;
   const protectedPaths = ["/profile"];
 
