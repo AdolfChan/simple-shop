@@ -10,9 +10,10 @@ import BlogSkeleton from "@/components/blog/blogFallback";
 export default async function Blog({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }) {
-  const page = parseInt(searchParams.page || "1", 10);
+  const params = await searchParams;
+  const page = parseInt(params.page || "1", 10);
   const total = await getTotal(9); //amount on each page
 
   return (
