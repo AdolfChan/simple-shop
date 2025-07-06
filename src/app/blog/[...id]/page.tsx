@@ -1,15 +1,8 @@
-import { FC } from "react";
 import { getPost } from "../../../../lib/actions/blog";
 import Image from "next/image";
 import Link from "next/link";
 
-interface Props {
-  params: {
-    id: string[];
-  };
-}
-
-const PostPage: FC<Props> = async ({ params }) => {
+async function PostPage({ params }: { params: { id: string[] } }) {
   const post = await getPost(params.id);
   if (!post) return <></>;
   const formattedDate = post.date
@@ -68,5 +61,5 @@ const PostPage: FC<Props> = async ({ params }) => {
       </main>
     </div>
   );
-};
+}
 export default PostPage;
