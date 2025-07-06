@@ -2,7 +2,11 @@ import { getPost } from "../../../../lib/actions/blog";
 import Image from "next/image";
 import Link from "next/link";
 
-async function PostPage({ params }: { params: { id: string[] } }) {
+export default async function PostPage({
+  params,
+}: {
+  params: { id: string[] };
+}) {
   const post = await getPost(params.id);
   if (!post) return <></>;
   const formattedDate = post.date
@@ -62,4 +66,3 @@ async function PostPage({ params }: { params: { id: string[] } }) {
     </div>
   );
 }
-export default PostPage;
