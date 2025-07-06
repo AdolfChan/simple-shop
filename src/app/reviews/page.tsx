@@ -20,7 +20,7 @@ export default async function ReviewsPage() {
             priority
           />
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white text-center">
+            <h1 className="text-4xl md:text-5xl font-bold font-serif text-white text-center">
               What Our Customers Say
             </h1>
           </div>

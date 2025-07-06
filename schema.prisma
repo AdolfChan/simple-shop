@@ -86,3 +86,13 @@ model Review {
   @@index([userId])
   @@index([date])
 }
+
+model Post {
+  id            String @id @default(cuid())
+  date          DateTime @default(now())
+  headline      String?
+  content       String?
+  tags          String[]
+  image         String?
+  preview       String?
+}

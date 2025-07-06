@@ -18,20 +18,18 @@ export default function Home() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-6">
-            <div className="text-white text-5xl font-bold text-center [text-shadow:_2px_2px_4px_rgb(0_0_0_/_40%)] [-webkit-text-stroke:_1px_black]">
+          <div className="absolute bg-black/25 inset-0 flex flex-col items-center justify-center gap-6">
+            <div className="text-white text-5xl font-bold font-serif text-center drop-shadow-lg">
               <p>Crafted with Passion, Served with Care</p>
             </div>
             <div className="flex gap-4">
               <Link
                 href="/menu"
-                className="inline-block rounded-full border-2 border-[#6489da] bg-[#6489da] px-8 py-3 text-base font-semibold text-white hover:bg-[#6489da]/90 hover:border-[#52519a] hover:text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(100,137,218,0.5)]"
+                className="inline-block rounded-full bg-[#6489da]/50 border-2 border-[#6489da]/50 px-10 py-4 font-semibold text-lg text-white backdrop-blur-md hover:bg-[#6489da]/40 hover:text-white transition-all duration-300 hover:scale-105"
               >
                 View Menu
               </Link>
-              <Suspense>
-                <ScrollDownBtn />
-              </Suspense>
+              <ScrollDownBtn />
             </div>
           </div>
         </div>

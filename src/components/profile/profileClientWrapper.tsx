@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import ProfileChanger from "./profileChanger";
+
 export type profileData = {
   name: string | null | undefined;
   email: string | null | undefined;
@@ -17,6 +18,7 @@ export type profileData = {
     | undefined;
   description: string | null | undefined;
 };
+
 export default function ProfileClientWrapper({
   children,
   profileData,

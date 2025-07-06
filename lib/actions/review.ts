@@ -116,33 +116,33 @@ export async function getReviewsForUser(page: number = 1, amount: number = 6) {
   }
 }
 
-export async function setReview(content: string, rating: number) {
-  try {
-    const session = await auth();
-    if (!session?.user) {
-      throw new Error("Unauthorized!");
-    }
-    const review = await prisma?.review.create({
-      data: {
-        content: content,
-        rating: rating,
-        userId: session.user.id!,
-      },
-      include: {
-        user: {
-          select: {
-            name: true,
-            image: true,
-          },
-        },
-      },
-    });
-    return review;
-  } catch (error) {
-    console.log(error);
-    throw new Error("Failed to add review!");
-  }
-}
+// export async function setReview(content: string, rating: number) {
+//   try {
+//     const session = await auth();
+//     if (!session?.user) {
+//       throw new Error("Unauthorized!");
+//     }
+//     const review = await prisma?.review.create({
+//       data: {
+//         content: content,
+//         rating: rating,
+//         userId: session.user.id!,
+//       },
+//       include: {
+//         user: {
+//           select: {
+//             name: true,
+//             image: true,
+//           },
+//         },
+//       },
+//     });
+//     return review;
+//   } catch (error) {
+//     console.log(error);
+//     throw new Error("Failed to add review!");
+//   }
+// }
 
 export async function getUser() {
   try {

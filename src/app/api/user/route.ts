@@ -33,7 +33,6 @@ export async function POST(request: Request) {
       email: parsed.data.email,
     };
 
-    // Only include description if it's not null/undefined
     if (
       parsed.data.description !== null &&
       parsed.data.description !== undefined
@@ -41,7 +40,6 @@ export async function POST(request: Request) {
       updateData.description = parsed.data.description;
     }
 
-    // Only include image if it's not null/undefined
     if (parsed.data.avatar !== null && parsed.data.avatar !== undefined) {
       updateData.image = parsed.data.avatar;
     }

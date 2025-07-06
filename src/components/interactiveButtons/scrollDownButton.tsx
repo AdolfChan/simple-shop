@@ -9,7 +9,7 @@ export default function ScrollDownBtn() {
   return (
     <button
       onClick={scrollToContent}
-      className="inline-block rounded-full border-2 border-gray-600 bg-gray-600 px-8 py-3 text-base font-semibold text-white hover:bg-gray-600/90 hover:scale-105 transition-colors duration-300"
+      className="inline-block rounded-full bg-white/20 border-2 border-white/40 px-10 py-4 text-lg font-semibold text-white backdrop-blur-md hover:bg-white/40 hover:text-white transition-all duration-300 hover:scale-105"
     >
       Learn More
     </button>
