@@ -2,12 +2,13 @@ import { getPost } from "../../../../lib/actions/blog";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function PostPage({
+export default async function Page({
   params,
 }: {
-  params: { id: string[] };
+  params: Promise<{ id: string[] }>;
 }) {
-  const post = await getPost(params.id);
+  const { id } = await params;
+  const post = await getPost(id);
   if (!post) return <></>;
   const formattedDate = post.date
     ? new Date(post.date).toLocaleDateString("en", {
