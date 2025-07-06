@@ -24,7 +24,8 @@ export default async function BlogPosts({
               src={post.image ? post.image : "/chefs/chef1.jpg"}
               alt="/chefs/chef1.jpg"
               width={800}
-              height={400}
+              height={1000}
+              priority
               className="w-full h-auto object-cover rounded-t-lg"
             />
             <div className="p-6">
