@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function BlogNotFound() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh]">
@@ -7,12 +9,12 @@ export default function BlogNotFound() {
       <p className="text-gray-600 mb-6">
         Sorry, the blog post or page you are looking for does not exist.
       </p>
-      <a
+      <Link
         href="/blog"
         className="px-4 py-2 bg-[#6489da] text-white rounded hover:bg-[#4a6fb3] transition"
       >
         Back to Blog
-      </a>
+      </Link>
     </div>
   );
 }
