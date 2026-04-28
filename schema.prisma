@@ -96,3 +96,23 @@ model Post {
   image         String?
   preview       String?
 }
+
+model Dish {
+  id            String @id @default(cuid())
+  name          String
+  description   String
+  image         String?
+  tags          String[]
+  category      String[]
+  rating        String?
+  calories      String?
+  price         String?
+  products      Product[]  //many-to-many
+}
+
+model Product{
+  id           String @id @default(cuid())
+  dishes       Dish[] 
+  name         String
+  image        String?
+}

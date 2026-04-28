@@ -35,7 +35,7 @@ export default async function Blog({
       <Suspense fallback={<BlogSkeleton />}>
         <BlogPosts page={page} total={total} />
       </Suspense>
-      <Pagination total={total} />
+      <Pagination total={total} scrollLabel="_BLOG" />
     </div>
   );
 }

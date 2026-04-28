@@ -44,9 +44,9 @@ export default function Header() {
             <li>
               <Link
                 className="text-gray-700 transition hover:text-gray-500/75"
-                href="/menue"
+                href="/menu"
               >
-                Menue
+                Menu
               </Link>
             </li>
 

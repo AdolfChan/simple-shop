@@ -2,30 +2,42 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-const scrollToBlog = () => {
-  const blogElem = document.querySelector('[aria-label="_BLOG"]');
+const scrollTo = (label: string) => {
+  const blogElem = document.querySelector(`[aria-label="${label}"]`);
   if (blogElem) blogElem.scrollIntoView({ behavior: "smooth" });
 };
 
-export default function Pagination({ total }: { total: number }) {
+export default function Pagination({
+  total,
+  scrollLabel,
+}: {
+  total: number;
+  scrollLabel: string;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const page = parseInt(searchParams.get("page") || "1");
 
   const handleNext = () => {
-    router.push(`?page=${page + 1}`, { scroll: false });
-    scrollToBlog();
+    const params = new URLSearchParams(searchParams);
+    params.set("page", (page + 1).toString());
+    router.push(`?${params.toString()}`, { scroll: false });
+    scrollTo(scrollLabel);
   };
 
   const handlePrev = () => {
-    router.push(`?page=${page - 1}`, { scroll: false });
-    scrollToBlog();
+    const params = new URLSearchParams(searchParams);
+    params.set("page", (page - 1).toString());
+    router.push(`?${params.toString()}`, { scroll: false });
+    scrollTo(scrollLabel);
   };
 
   const handleNum = (num: number) => {
-    router.push(`?page=${num}`, { scroll: false });
-    scrollToBlog();
+    const params = new URLSearchParams(searchParams);
+    params.set("page", num.toString());
+    router.push(`?${params.toString()}`, { scroll: false });
+    scrollTo(scrollLabel);
   };
 
   //Pagination Style:
